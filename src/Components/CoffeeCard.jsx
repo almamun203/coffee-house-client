@@ -1,12 +1,12 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const CoffeeCard = ({coffee}) => {
+const CoffeeCard = ({coffees,setCoffees,coffee}) => {
     const {_id,name,quantity,taste,image} = coffee;
 
-  const handleDelete = _id =>{
+  const handleDelete = (_id) =>{
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -26,11 +26,14 @@ const CoffeeCard = ({coffee}) => {
       .then(data=>{
         console.log(data)
         if(data.deletedCount > 0){
+          
           Swal.fire({
             title: "Deleted!",
             text: "Coffee has been deleted.",
             icon: "success"
           });
+          const remaining = coffees.filter(cof=>cof._id !==_id);
+          setCoffees(remaining);
         }
       })
 
@@ -60,6 +63,12 @@ const CoffeeCard = ({coffee}) => {
     );
 };
 
+
+CoffeeCard.propTypes={
+coffee:PropTypes.object,
+coffees:PropTypes.array,
+setCoffees:PropTypes.array
+}
 
 
 export default CoffeeCard;
